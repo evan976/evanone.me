@@ -1,3 +1,26 @@
 {
-  "extends": "next/core-web-vitals"
+  "extends": "next/core-web-vitals",
+  "overrides": [
+    {
+      "files": ["*.ts", "*.tsx", "*.js", "*.mjs"],
+      "rules": {
+        "semi": ["warn", "never"],
+        "quotes": ["warn", "single"],
+        "jsx-quotes": ["warn", "prefer-double"],
+        "import/no-anonymous-default-export": "off",
+        "react/display-name": "off",
+        "eol-last": ["warn", "always"],
+        "import/order": [
+          "warn",
+          {
+            "groups": [["builtin", "external"], "internal", ["parent", "index", "sibling"]],
+            "newlines-between": "always",
+            "alphabetize": {
+              "order": "asc"
+            }
+          }
+        ]
+      }
+    }
+  ]
 }
