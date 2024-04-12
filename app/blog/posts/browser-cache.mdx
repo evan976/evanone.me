@@ -1,0 +1,91 @@
+---
+title: '浏览器缓存'
+publishedAt: '2023-12-28'
+summary: '浏览器缓存是一种用于提高网页加载速度和减少服务器负载的技术，强缓存和协商缓存是两种常见的缓存机制。'
+---
+
+## 强缓存
+
+- 当浏览器第一次请求资源时，服务器会返回资源，并在响应头中设置缓存标识符（比如 `Cache-Control` 和 `Expires`）。
+- 浏览器再次请求该资源时，会先检查是否在有效期内（即当前时间与缓存标识符中指定的过期时间比较），如果在有效期内，则直接从缓存中获取资源，不发起实际的网络请求，这就是命中了强缓存。
+
+## 协商缓存
+
+- 当资源过期或者需要验证时，浏览器会向服务器发送请求，但是在请求头中会携带一些额外的信息，比如 `If-Modified-Since`、`If-None-Match` 等，这些信息是告诉服务器：只有在资源发生变化之后，才返回新的资源。
+服务器接收到请求后，会根据这些信息进行验证，如果资源未发生变化，服务器会返回一个 `304 Not Modified` 状态码，告诉浏览器直接使用缓存。这就是命中了协商缓存。
+
+强缓存和协商缓存的命中顺序通常是这样的：
+
+- 首先检查强缓存，如果强缓存命中，则直接使用缓存，不会发送请求到服务器。
+- 如果强缓存未命中，浏览器会发送请求到服务器，服务器会根据请求头中的信息进行验证，如果资源未发生变化，则返回304状态码，浏览器使用缓存。
+- 如果资源已经发生变化，服务器会返回新的资源，浏览器会将新的资源存储到缓存中，并使用它。
+
+```jsx
+export default function App() {
+  return (
+    <>
+      <h1>
+        Hello
+        <span className="small"> world</span>
+      </h1>
+      <div style={styles.bar} />
+    </>
+  )
+}
+```
+```js
+function isEqual(value, other) {
+	// 判断两个值是否为相同的类型
+	if (typeof value !== typeof other) {
+	  return false
+	}
+	
+	// 如果是基本数据类型，直接比较值
+	if (typeof value !== 'object' || value === null) {
+	  return value === other
+	}
+	
+	// 如果是对象类型，则递归比较属性值
+	const valueKeys = Object.keys(value)
+	const otherKeys = Object.keys(other)
+	
+	// 检查属性数量是否相同
+	if (valueKeys.length !== otherKeys.length) {
+	  return false
+	}
+	
+	// 检查每个属性的值是否相等
+	for (let key of valueKeys) {
+    if (!other.hasOwnProperty(key) || !isEqual(value[key], other[key])) {
+      return false
+    }
+  }
+  
+  return true
+}
+```
+
+```css
+:root {
+  --sh-class: #8d85ff;
+  --sh-identifier: #354150;
+  --sh-sign: #8996a3;
+  --sh-property: #0550ae;
+  --sh-entity: #249a97;
+  --sh-jsxliterals: #bf7db6;
+  --sh-string: #00a99a;
+  --sh-keyword: #f47067;
+  --sh-comment: #a19595;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --sh-identifier: #f8f8f2;
+    --sh-string: #0fa295;
+  }
+  html {
+    color-scheme: dark;
+  }
+}
+
+```

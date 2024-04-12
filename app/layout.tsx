@@ -32,7 +32,7 @@ export default function RootLayout({
         LXGWWenKaiScreenFont.variable,
       )}
     >
-      <body className="antialiased max-w-xl px-4 sm:px-0 mt-8 mx-auto">
+      <body className="antialiased max-w-xl px-4 sm:px-0 mt-8 sm:mx-auto">
         <main className="flex-auto min-w-0 mt-6 flex flex-col px-2 md:px-0">
           <Navbar />
           {children}
