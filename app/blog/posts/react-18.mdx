@@ -1,0 +1,232 @@
+---
+title: 'React 18 新特性'
+publishedAt: '2023-06-12'
+image: '/react.png'
+summary: 'React 18 的发布带来了一系列令人振奋的新特性和变化，将前端开发推向了一个新的高度。本文将介绍 React 18 的主要特性，包括并发模式、新的渲染器以及更流畅的更新机制。让我们一起探索 React 生态系统的最新进展，以及如何利用这些新功能来构建更加强大和响应式的用户界面。'
+---
+
+## 并发模式渲染
+
+- 主要目标：根据用户的设备性能和网速对渲染过程进行适当的调整，帮助应用始终保持可响应。换句话说就是能够保证 React 应用在长时间的渲染过程中依旧保持可交互性，避免页面出现卡顿或无响应的情况，从而提升用户体验
+- 页面产生卡顿的原因：JS 单线程，浏览器多线程
+- 在并发渲染模式下，渲染不是阻塞的，而是可中断的
+- Fiber 树的更新流程分为 render 阶段和 commit 阶段，render 阶段会收集 Fiber 树中需要更新的部分，commit 阶段是将变更应用到真实的宿主环境中，在浏览器中就是操作 DOM
+- render 阶段是没有副作用的，意味着可被拆分
+- 阻塞模式下，render 阶段一次性执行完成。并发模式下，render 阶段可被拆解，每个时间片内分别运行一部分，直至完成
+
+## render API
+
+```jsx
+// React 17
+ReactDOM.render(<App />, root)
+ReactDOM.unmountComponentAtNode(root)
+
+// React 18
+ReactDOM.createRoot(root).render(<App />)
+root.unmount()
+
+// SSR
+// React 17
+ReactDOM.hydrate(<App />, root)
+
+// React 18
+ReactDOM.hydrateRoot(root, <App />)
+```
+
+## 自动批处理
+
+批处理是指为了获得更好的性能，在数据层，将**多个状态更新**批量处理，合并成**一次更新**（在视图层，将**多个渲染**合并成**一次渲染**）
+
+- 在 React 18 之前，只在 React 事件处理函数中进行批量更新，默认情况下，在 `Promise`、`setTimeout`、`原生事件处理函数`或`任何其他事件`内的更新都不会进行批量处理
+- `flushSync` 退出批量更新。但是 `flushSync` 内部的多个 `setState` 仍然为批量更新
+
+## `Suspense`
+
+不再需要 fallback 来捕获。不再跳过缺失值或值为 null 的 fallback 的 Suspense 边界，相反，会捕获边界并且向外层查找，如果查找不到，会将 fallback 呈现为 null
+
+```jsx
+// React 17
+function App() {
+	return (
+		<Suspense fallback={<Loading />}> // => 这个边界被使用，显示 Loading 组件
+			<Suspense>                      // => 这个边界被跳过，没有 fallback 属性
+				<Page />
+			</Suspense>
+		</Suspense>
+	)
+}
+
+// React 18
+function App() {
+	return (
+		<Suspense fallback={<Loading />}> // => 不使用
+			<Suspense>                      // => 这个边界被使用，将 fallback 渲染为 null
+				<Page />
+			</Suspense>
+		</Suspense>
+	)
+}
+```
+
+## `startTransition`
+
+主要为了能在大量的任务下也能保持 UI 响应。将特定的更新标记为“**过渡**”来显著改善用户交互，简单来说，就是被 `startTransition` 回调包裹的 `setState` 触发的渲染会被标记为不紧急渲染，这些渲染可能被其他紧急渲染所抢占
+
+```jsx
+function App() {
+	const [list, setList] = React.useState<any[]>([])
+	const [isPending, startTransition] = React.useTransition()
+	
+	React.useEffect(() => {
+		startTransition(() => {
+			setList(new Array(10000).fill(null))
+		})
+	}, [])
+	
+	if (isPending) return <Skeleton />
+	
+	return (
+		<ul>
+			{list.map((_, index) => (
+				<li key={index}>{index}</li>
+			))}
+		</ul>
+	)
+}
+```
+
+## `use`
+
+读取类似于 `Promise` 或 `context` 资源的值
+
+```jsx
+const value = use(resource)
+
+function App() {
+	const theme = use(ThemeContext)
+	// ...
+}
+```
+
+```jsx
+function App() {
+	const promise = fetchMessages()
+	return (
+		<Suspense fallback={<h1>Loading...</h1>}>
+			<Message promise={promise} />
+		</Suspense>
+	)
+}
+
+function Message({ promise }) {
+	const messages = use(promise)
+	return (
+		<p>{messages}</p>
+	)
+}
+```
+
+> 注意
+  - 必须在组件或者 Hook 内部调用
+  - 可以在循环和条件语句中调用
+  - 在服务器组件中获取数据时，优先使用 `async/await` ，`async/await` 会从调用 `await` 的点开始渲染，而 `use` 会在数据获取到后重新渲染组件
+
+## `useInsertionEffect`
+
+工作原理大致和 `useLayoutEffect` 相同，执行时机在 DOM 生成之后，`useLayoutEffect` 之前。此时无法访问 DOM 节点的引用，一般用于提前注入 `<style>` 脚本
+
+```jsx
+function useCSS(rule) {
+	useInsertionEffect(() => {
+    if (!isInserted.has(rule)) {
+      isInserted.add(rule)
+      document.head.appendChild(getStyleForRule(rule))
+    }
+  })
+  return rule
+}
+
+function App() {
+	const className = useCSS(rule)
+	return (
+		<div className={className}>
+			{children}
+		</div>
+	)
+}
+```
+
+## `useDeferredValue`
+
+返回一个延迟响应的值，可以让一个 state 延迟生效，只有当前没有紧急更新时，该值才会变成最新值
+
+**`useTransition` 和 `useDeferredValue`**
+
+- 相同点：本质上都是标记成了一次延迟更新的任务
+- 不同点：`useTransition` 是把更新任务变成了延迟更新任务，而 `useDeferredValue` 是产生一个新的值，这个值作为延时状态。（一个用来包装方法，一个用来包装值）
+
+```jsx
+function App() {
+	const [list, setList] = React.useState<any[]>([])
+	
+	React.useEffect(() => {
+		setList(new Array(10000).fill(null))
+	}, [])
+	
+	const deferredList = useDeferredValue(list)
+	
+	return (
+		<ul>
+			{deferredList.map((_, index) => (
+				<li key={index}>{index}</li>
+			))}
+		</ul>
+	)
+}
+```
+
+## `useId`
+
+同一组件在客户端和服务端生成相同的唯一 ID，避免 `hydration` 的不兼容
+
+```jsx
+function Checkbox() {
+	const id = useId()
+	return (
+		<div>
+			<label htmlFor={id}>React</label>
+			<input type="checkbox" name="react" id={id} />
+		</div>
+	)
+}
+```
+
+## `useSyncExternalStore`
+
+主要用来解决外部数据撕裂的问题，通过强制同步更新数据让 React 组件在并发模式下安全有效的读取外部数据源，一般是提供给三方状态管理库使用
+
+```jsx
+function useMediaQuery(query: string) {
+  const subscribe = React.useCallback(
+    (callback: () => void) => {
+      const matchMedia = window.matchMedia(query)
+
+      matchMedia.addEventListener('change', callback)
+      return () => {
+        matchMedia.removeEventListener('change', callback)
+      }
+    },
+    [query]
+  )
+
+  function getSnapshot() {
+    return window.matchMedia(query).matches
+  }
+
+  function getServerSnapshot() {
+    return false
+  }
+
+  return React.useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot)
+}
+```
