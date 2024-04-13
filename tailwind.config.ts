@@ -8,7 +8,7 @@ const config = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['var(--font-lxgwwenkaiscreen)', ...fontFamily.sans],
+        sans: ['var(--font-open-sans)', ...fontFamily.sans],
       },
     },
   },

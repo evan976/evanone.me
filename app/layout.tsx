@@ -1,16 +1,15 @@
 import 'app/globals.css'
 
 import type { Metadata } from 'next'
-import localFont from 'next/font/local'
+import { Open_Sans } from 'next/font/google'
 
 import Footer from 'app/components/footer'
 import { Navbar } from 'app/components/navbar'
 import { baseUrl } from 'app/sitemap'
 
-const LXGWWenKaiScreenFont = localFont({
-  src: '../public/fonts/LXGWWenKaiScreen.ttf',
-  display: 'swap',
-  variable: '--font-lxgwwenkaiscreen',
+const openSans = Open_Sans({
+  subsets: ['latin'],
+  variable: '--font-open-sans',
 })
 
 export const metadata: Metadata = {
@@ -54,7 +53,7 @@ export default function RootLayout({
       lang="zh-CN"
       className={cn(
         'text-black bg-white dark:text-white dark:bg-black font-sans',
-        LXGWWenKaiScreenFont.variable,
+        openSans.variable,
       )}
     >
       <body className="antialiased max-w-xl px-4 sm:px-0 mt-8 sm:mx-auto">
