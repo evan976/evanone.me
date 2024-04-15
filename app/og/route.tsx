@@ -6,11 +6,33 @@ export function GET(request: Request) {
 
   return new ImageResponse(
     (
-      <div tw="flex flex-col w-full h-full items-center justify-center bg-white">
-        <div tw="flex flex-col md:flex-row w-full py-12 px-4 md:items-center justify-between p-8">
-          <h2 tw="flex flex-col text-4xl font-bold tracking-tight text-left">
+      <div
+        tw="flex flex-col w-full h-full items-center justify-center"
+        style={{
+          backgroundImage: 'linear-gradient(to bottom, #dbf4ff, #fff1f1)'
+        }}
+      >
+        <div tw="flex flex-col w-full py-12 px-4 items-center justify-center p-8">
+          <h2
+            tw="text-4xl font-bold tracking-tight text-center"
+            style={{
+              backgroundImage: 'linear-gradient(90deg, rgb(0, 124, 240), rgb(0, 223, 216))',
+              backgroundClip: 'text',
+              color: 'transparent',
+            }}
+          >
             {title}
           </h2>
+          <p
+            tw="font-medium"
+            style={{
+              backgroundImage: 'linear-gradient(90deg, rgb(121, 40, 202), rgb(255, 0, 128))',
+              backgroundClip: 'text',
+              color: 'transparent',
+            }}
+          >
+            @evanone.me
+          </p>
         </div>
       </div>
     ),
