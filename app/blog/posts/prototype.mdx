@@ -1,0 +1,152 @@
+---
+title: '原型原型链'
+publishedAt: '2023-03-05'
+summary: 'JavaScript 中的原型和原型链是理解该语言中对象和继承机制的关键概念。原型是每个 JavaScript 对象的基础，它包含对象的属性和方法。对象可以通过原型继承属性和方法，而原型链描述了对象之间的继承关系。在原型链中，每个对象都有一个指向其原型的链接，这使得属性和方法可以在整个链中被访问和继承。'
+---
+
+一些概念：
+
+- JavaScript 对象分为普通对象和函数对象
+- 每个对象都有 `__proto__` 属性，但只有函数对象才有`prototype` 属性
+- 属性 `__proto__` 是一个对象，它有两个属性，`constructor` 和 `__proto__`
+- 原型对象 `prototype` 有一个默认的 `constructor` 属性，用于记录实例是由那个构造函数创建
+
+### `prototype`
+
+```js
+function Person() {}
+
+// 只有函数对象才有prototype 属性
+Person.prototype.name = 'Evan'
+
+let person = new Person()
+
+console.log(person.name) // Evan
+```
+
+在 JavaScript 中，每个函数对象都具有一个特殊的属性称为 `prototype`。当创建一个函数时，JavaScript 会自动为该函数对象添加一个名为 `prototype` 的属性，这个属性指向一个对象，这个对象就是该函数的原型对象
+
+<Image
+  src="/images/prototype-1.png"
+  width={576}
+  height={200}
+  alt="Prototype"
+  className="border border-neutral-200 dark:border-neutral-900"
+  priority
+/>
+
+### `__proto__`
+
+每一个 JavaScript 对象（除了 `null` ）都具有的一个属性，叫 `__proto__`，这个属性会指向该对象的原型
+
+```js
+function Person() {}
+
+let person = new Person()
+
+console.log(person.__proto__ === Person.prototype) // true
+```
+
+<Image
+  src="/images/prototype-2.png"
+  width={576}
+  height={300}
+  className="!mt-4 border border-neutral-200 dark:border-neutral-900"
+  alt="Prototype"
+  priority
+/>
+
+### `constructor`
+
+每个原型都有一个 `constructor` 属性指向关联的构造函数
+
+```js
+function Person() {}
+console.log(Person === Person.prototype.constructor) // true
+```
+
+<Image
+  src="/images/prototype-3.png"
+  width={576}
+  height={300}
+  className="!mt-4 border border-neutral-200 dark:border-neutral-900"
+  alt="Prototype"
+  priority
+/>
+
+综上可以得出：
+
+```js
+function Person() {}
+
+let person = new Person()
+
+// 实例（person）对象的 __proto__ 和原型对象指向同一个地方
+console.log(person.__proto__ == Person.prototype) // true
+
+// 原型对象（Person.prototype）的 constructor 指向构造函数本身
+console.log(Person.prototype.constructor == Person) // true
+
+console.log(Object.getPrototypeOf(person) === Person.prototype) // true
+
+```
+
+### 实例与原型
+
+当读取实例的属性时，如果找不到，就会查找与对象关联的原型中的属性，如果还查不到，就去找原型的原型，一直找到最顶层为止
+
+```js
+function Person() {}
+
+Person.prototype.name = 'Evan'
+
+let person = new Person()
+
+person.name = 'Bob'
+console.log(person.name) // Bob
+
+delete person.name
+console.log(person.name) // Evan
+```
+
+在这个例子中，给实例对象 person 添加了 name 属性，打印 person.name 的时候，结果自然为 Bob
+
+但是当删除了 person 的 name 属性时，读取 person.name，从 person 对象中找不到 name 属性，就会从 person 的原型也就是 `person.__proto__`，也就是 `Person.prototype` 中查找，然后找到 name 属性，结果为 Evan
+
+### 原型的原型
+
+原型也是一个对象，既然是对象，就可以用最原始的方式创建它
+
+```js
+let obj = new Object()
+obj.name = 'Evan'
+console.log(obj.name) // Evan
+```
+
+其实原型对象就是通过 `Object` 构造函数生成的，结合之前所讲，实例的 `__proto__` 指向构造函数的 `prototype`
+
+<Image
+  src="/images/prototype-4.png"
+  width={576}
+  height={500}
+  className="border border-neutral-200 dark:border-neutral-900"
+  alt="Prototype"
+  priority
+/>
+
+### 原型链
+
+```js
+console.log(Object.prototype.__proto__ === null) // true
+```
+
+查找属性的时候查到 `Object.prototype` 停止查找
+
+<Image
+  src="/images/prototype-5.png"
+  width={576}
+  height={576}
+  className="border border-neutral-200 dark:border-neutral-900"
+  alt="Prototype"
+  priority
+/>
