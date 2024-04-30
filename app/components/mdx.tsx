@@ -2,7 +2,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { MDXRemote, type MDXRemoteProps } from 'next-mdx-remote/rsc'
 import * as React from 'react'
-import { highlight } from 'sugar-high'
+import rehypeHighlight from 'rehype-highlight'
 
 interface TableProps {
   data: {
@@ -58,22 +58,27 @@ function RoundedImage({ alt, className, ...props }: React.ComponentProps<typeof 
   return <Image alt={alt} className={`rounded-lg ${className}`} {...props} />
 }
 
+function slugify(node: React.ReactNode) {
+  if (typeof node === 'string') {
+    // 中文或数字
+    if (/^[\u4e00-\u9fa5\d]+$/.test(node)) {
+      return node
+    } else {
+      return node
+        .toLowerCase()
+        .trim()
+        .replace(/\s+/g, '-')
+        .replace(/&/g, '-and-')
+        .replace(/[^\w\-]+/g, '')
+        .replace(/\-\-+/g, '-')
+    }
+  }
 
-function Code({ children, ...props }: React.ComponentProps<'code'>) {
-  const code = children?.toString()
-  const codeHTML = highlight(code || '')
-  return <code dangerouslySetInnerHTML={{ __html: codeHTML }} {...props} />
-}
+  if (typeof node === 'object' && node !== null && 'props' in node) {
+    return slugify(node.props.children)
+  }
 
-function slugify(str: React.ReactNode) {
-  return str
-    ?.toString()
-    .toLowerCase()
-    .trim()
-    .replace(/\s+/g, '-')
-    .replace(/&/g, '-and-')
-    .replace(/[^\w\-]+/g, '')
-    .replace(/\-\-+/g, '-')
+  return node
 }
 
 function createHeading(level: number) {
@@ -107,7 +112,6 @@ const components: MDXRemoteProps['components'] = {
   h6: createHeading(6),
   a: CustomLink,
   Image: RoundedImage,
-  code: Code,
   Table,
 }
 
@@ -116,6 +120,15 @@ export function CustomMDX(props: MDXRemoteProps) {
     <MDXRemote
       {...props}
       components={{ ...components, ...(props.components || {}) }}
+      options={{
+        mdxOptions: {
+          development: process.env.NODE_ENV !== 'production',
+          rehypePlugins: [
+            // @ts-ignore
+            rehypeHighlight,
+          ]
+        }
+      }}
     />
   )
 }

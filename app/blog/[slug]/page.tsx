@@ -10,6 +10,10 @@ interface BlogProps {
   }
 }
 
+function getBlogPostBySlug(slug: string) {
+  return getBlogPosts().find((post) => post.slug === slug)
+}
+
 export async function generateStaticParams() {
   const posts = getBlogPosts()
 
@@ -19,7 +23,7 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: BlogProps) {
-  const post = getBlogPosts().find((post) => post.slug === params.slug)
+  const post = getBlogPostBySlug(params.slug)
   if (!post) {
     return
   }
@@ -57,8 +61,8 @@ export async function generateMetadata({ params }: BlogProps) {
   }
 }
 
-export default async function Blog({ params }: BlogProps) {
-  const post = getBlogPosts().find((post) => post.slug === params.slug)
+export default async function Page({ params }: BlogProps) {
+  const post = getBlogPostBySlug(params.slug)
   if (!post) {
     notFound()
   }
@@ -90,10 +94,15 @@ export default async function Blog({ params }: BlogProps) {
       <h1 className="title font-semibold text-2xl tracking-tighter">
         {post.metadata.title}
       </h1>
-      <div className="flex justify-between items-center mt-2 mb-8 text-sm">
-        <p className="text-sm text-neutral-600 dark:text-neutral-400">
+      <div className="flex gap-6 items-center mt-2 mb-8 text-sm">
+        <time
+          dateTime={post.metadata.publishedAt}
+          className="text-sm text-neutral-600 dark:text-neutral-400"
+        >
           {formatDate(post.metadata.publishedAt, true)}
-        </p>
+        </time>
+        <span>约 {post.metadata.readingTime.words} 字</span>
+        <span>约 {Math.ceil(post.metadata.readingTime.minutes)} 分钟</span>
       </div>
       <article className="prose">
         <CustomMDX source={post.content} />

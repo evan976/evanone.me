@@ -14,7 +14,10 @@
     "incremental": true,
     "plugins": [{ "name": "next" }],
     "paths": {
-      "app/*": ["./app/*"]
+      "app/*": ["./app/*"],
+      "components/*": ["./components/*"],
+      "lib/*": ["./lib/*"],
+      "styles/*": ["./styles/*"]
     }
   },
   "include": [
