@@ -13,7 +13,7 @@ export const Card = React.forwardRef<HTMLDivElement, CardProps>(
     const Component = asChild ? Slot : 'div'
     return (
       <Component
-        className={cn('bg-post rounded-[0.625rem] transition-colors duration-300 border-2 border-transparent hover:border-label p-6', className)}
+        className={cn('bg-post rounded-[0.625rem] transition-colors duration-300 border-2 border-transparent hover:border-label sm:p-6 p-4', className)}
         {...props}
         ref={ref}
       />

@@ -99,11 +99,11 @@ export default async function Page({ params }: BlogProps) {
           })
         }}
       />
-      <div className="bg-profile -mt-20 px-10 py-9 flex flex-col shadow-[0px_2px_28px_0px_rgba(0,0,0,0.20)] rounded-[10px]">
+      <div className="bg-profile sm:-mt-20 -mt-48 sm:px-10 sm:py-9 px-5 py-4 flex flex-col shadow-profile sm:rounded-[0.625rem]">
         <div className="flex items-center">
           <Link href="/" className="text-blue flex items-center">
             <ChevronLeftIcon />
-            <span className="text-xs">返回</span>
+            <span className="sm:text-xs text-sm">返回</span>
           </Link>
         </div>
         <h1 className="text-2xl font-bold text-title mt-5">{post.metadata.title}</h1>
@@ -124,7 +124,7 @@ export default async function Page({ params }: BlogProps) {
           </div>
         </div>
       </div>
-      <article className="prose px-8 py-10">
+      <article className="prose bg-background sm:px-8 sm:py-10 px-4 py-5">
         <CustomMDX source={post.content} />
       </article>
     </section>

@@ -24,6 +24,9 @@ const config = {
       fontFamily: {
         sans: ['var(--font-open-sans)', ...fontFamily.sans],
       },
+      boxShadow: {
+        profile: '0px 2px 28px 0px rgba(0,0,0,0.20)',
+      }
     },
   },
   plugins: [],

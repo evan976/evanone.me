@@ -8,7 +8,7 @@ export default function BlogPost() {
   const allPosts = getBlogPosts()
 
   return (
-    <div className="grid sm:grid-cols-2 grid-cols-1 gap-8 mt-12">
+    <div className="grid sm:grid-cols-2 grid-cols-1 gap-8 mt-12 max-sm:px-4">
       {allPosts
         .sort((a, b) => {
           if (new Date(a.metadata.publishedAt) > new Date(b.metadata.publishedAt)) {

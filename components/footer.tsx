@@ -2,8 +2,8 @@ import { CodeIcon, GithubIcon, RssIcon } from 'components/icons'
 
 export default function Footer() {
   return (
-    <footer className="mb-16 max-w-4xl mx-auto">
-      <ul className="mt-8 flex text-subtitle space-x-6">
+    <footer className="sm:mb-16 mb-12 max-w-4xl mx-auto max-sm:px-4">
+      <ul className="mt-8 flex max-sm:justify-center text-subtitle space-x-6">
         <li>
           <a
             className="transition-all"
@@ -38,7 +38,7 @@ export default function Footer() {
           </a>
         </li>
       </ul>
-      <p className="mt-8 text-sm">
+      <p className="sm:mt-8 mt-4 text-sm max-sm:text-center">
         &copy; {new Date().getFullYear()} Evan. All rights reserved.
       </p>
     </footer>

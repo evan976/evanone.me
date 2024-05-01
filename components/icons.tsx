@@ -9,7 +9,7 @@ export function ChevronLeftIcon() {
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      className="w-4 h-4"
+      className="sm:w-4 sm:h-4 w-5 h-5"
       xmlns="http://www.w3.org/2000/svg"
     >
       <path d="m15 18-6-6 6-6" />
