@@ -1,7 +1,14 @@
-export default function Page() {
+import BlogPost from 'components/blog-post'
+import Profile from 'components/profile'
+import Skills from 'components/skills'
+
+export default async function Page() {
   return (
     <section>
-      <h1 className="mb-8 text-2xl font-semibold tracking-tighter">
+      <Profile />
+      <Skills />
+      <BlogPost />
+      {/* <h1 className="mb-8 text-2xl font-semibold tracking-tighter">
         👏 Hi, I&#39;m Evan.
       </h1>
       <p className="mb-4">
@@ -9,7 +16,7 @@ export default function Page() {
       </p>
       <p className="mb-4">欢迎你的光临，让我们一起探索前端技术的无限可能性吧！</p>
       <div className="my-8">
-      </div>
+      </div> */}
     </section>
   )
 }

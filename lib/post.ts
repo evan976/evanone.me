@@ -54,41 +54,21 @@ function getMDXData(dir: string) {
 }
 
 export function getBlogPosts() {
-  return getMDXData(path.join(process.cwd(), 'app', 'blog', 'posts'))
+  return getMDXData(path.join(process.cwd(), 'content'))
 }
 
-export function formatDate(date: string, relative = false) {
-  const currentDate = new Date()
-  if (!date.includes('T')) {
-    date = `${date}T00:00:00`
-  }
-  const targetDate = new Date(date)
+export async function getContributionGraph() {
+  const response = await fetch(
+    `https://skyline.github.com/wujihua118/${new Date().getFullYear()}.json`, {
+      next: { revalidate: 60 * 60 * 24 },
+    }
+  )
 
-  const yearsAgo = currentDate.getFullYear() - targetDate.getFullYear()
-  const monthsAgo = currentDate.getMonth() - targetDate.getMonth()
-  const daysAgo = currentDate.getDate() - targetDate.getDate()
-
-  let formattedDate = ''
-
-  if (yearsAgo > 0) {
-    formattedDate = `${yearsAgo} 年前`
-  } else if (monthsAgo > 0) {
-    formattedDate = `${monthsAgo} 个月前`
-  } else if (daysAgo > 0) {
-    formattedDate = `${daysAgo} 天前`
-  } else {
-    formattedDate = '今天'
+  if (!response.ok) {
+    throw new Error(response.statusText)
   }
 
-  const fullDate = targetDate.toLocaleDateString('zh-CN', {
-    month: 'long',
-    day: 'numeric',
-    year: 'numeric',
-  })
+  const data = await response.json()
 
-  if (!relative) {
-    return fullDate
-  }
-
-  return formattedDate
+  return data.contributions
 }

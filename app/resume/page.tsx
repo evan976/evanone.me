@@ -1,4 +1,4 @@
-import { Resume } from 'app/components/resume'
+import { Resume } from 'components/resume'
 
 export default function Page() {
   return (

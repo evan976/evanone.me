@@ -28,7 +28,7 @@ console.log(person.name) // Evan
 
 <Image
   src="/images/prototype-1.png"
-  width={576}
+  width={832}
   height={200}
   alt="Prototype"
   className="border border-neutral-200 dark:border-neutral-900"
@@ -49,11 +49,14 @@ console.log(person.__proto__ === Person.prototype) // true
 
 <Image
   src="/images/prototype-2.png"
-  width={576}
+  width={832}
   height={300}
-  className="!mt-4 border border-neutral-200 dark:border-neutral-900"
+  className="border border-neutral-200 dark:border-neutral-900"
   alt="Prototype"
   priority
+  style={{
+    marginTop: '16px'
+  }}
 />
 
 ### `constructor`
@@ -67,11 +70,14 @@ console.log(Person === Person.prototype.constructor) // true
 
 <Image
   src="/images/prototype-3.png"
-  width={576}
+  width={832}
   height={300}
-  className="!mt-4 border border-neutral-200 dark:border-neutral-900"
+  className="border border-neutral-200 dark:border-neutral-900"
   alt="Prototype"
   priority
+  style={{
+    marginTop: '16px'
+  }}
 />
 
 综上可以得出：
@@ -127,7 +133,7 @@ console.log(obj.name) // Evan
 
 <Image
   src="/images/prototype-4.png"
-  width={576}
+  width={832}
   height={500}
   className="border border-neutral-200 dark:border-neutral-900"
   alt="Prototype"
@@ -144,7 +150,7 @@ console.log(Object.prototype.__proto__ === null) // true
 
 <Image
   src="/images/prototype-5.png"
-  width={576}
+  width={832}
   height={576}
   className="border border-neutral-200 dark:border-neutral-900"
   alt="Prototype"

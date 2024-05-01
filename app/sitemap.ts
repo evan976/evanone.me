@@ -1,4 +1,4 @@
-import { getBlogPosts } from 'app/blog/utils'
+import { getBlogPosts } from 'lib/post'
 
 export const baseUrl = 'https://evanone.me'
 

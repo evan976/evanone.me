@@ -1,8 +1,16 @@
+import Link from 'next/link'
 import { notFound } from 'next/navigation'
 
-import { formatDate, getBlogPosts } from 'app/blog/utils'
-import { CustomMDX } from 'app/components/mdx'
 import { baseUrl } from 'app/sitemap'
+import {
+  BookOpenIcon,
+  ChevronLeftIcon,
+  ClockIcon,
+  FlaskConicalIcon,
+} from 'components/icons'
+import { CustomMDX } from 'components/mdx'
+import { getBlogPosts } from 'lib/post'
+import { formatDate } from 'lib/utils'
 
 interface BlogProps {
   params: {
@@ -91,20 +99,32 @@ export default async function Page({ params }: BlogProps) {
           })
         }}
       />
-      <h1 className="title font-semibold text-2xl tracking-tighter">
-        {post.metadata.title}
-      </h1>
-      <div className="flex gap-6 items-center mt-2 mb-8 text-sm">
-        <time
-          dateTime={post.metadata.publishedAt}
-          className="text-sm text-neutral-600 dark:text-neutral-400"
-        >
-          {formatDate(post.metadata.publishedAt, true)}
-        </time>
-        <span>约 {post.metadata.readingTime.words} 字</span>
-        <span>约 {Math.ceil(post.metadata.readingTime.minutes)} 分钟</span>
+      <div className="bg-profile -mt-20 px-10 py-9 flex flex-col shadow-[0px_2px_28px_0px_rgba(0,0,0,0.20)] rounded-[10px]">
+        <div className="flex items-center">
+          <Link href="/" className="text-blue flex items-center">
+            <ChevronLeftIcon />
+            <span className="text-xs">返回</span>
+          </Link>
+        </div>
+        <h1 className="text-2xl font-bold text-title mt-5">{post.metadata.title}</h1>
+        <div className="flex gap-6 items-center mt-3 text-sm text-span">
+          <div className="flex items-center gap-1">
+            <ClockIcon />
+            <time dateTime={post.metadata.publishedAt}>
+              {formatDate(post.metadata.publishedAt)}
+            </time>
+          </div>
+          <div className="flex items-center gap-1">
+            <BookOpenIcon />
+            <span>约 {post.metadata.readingTime.words} 字</span>
+          </div>
+          <div className="flex items-center gap-1">
+            <FlaskConicalIcon />
+            <span>约 {Math.ceil(post.metadata.readingTime.minutes)} 分钟</span>
+          </div>
+        </div>
       </div>
-      <article className="prose">
+      <article className="prose px-8 py-10">
         <CustomMDX source={post.content} />
       </article>
     </section>

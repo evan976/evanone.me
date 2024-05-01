@@ -4,8 +4,25 @@
 
 @import './highlight.css';
 
+
+@layer base {
+  :root {
+    --color-blue: 50 148 248;
+    --color-title: 231 237 244;
+    --color-subtitle: 196 212 227;
+    --color-text: 175 194 212;
+    --color-span: 123 150 178;
+    --color-label: 58 83 107;
+    --color-border: 28 47 65;
+    --color-post: 17 33 49;
+    --color-profile: 11 27 43;
+    --color-background: 7 20 34;
+    --color-input: 4 15 26;
+  }
+}
+
 ::selection {
-  @apply bg-blue-500 text-white;
+  @apply bg-blue text-white;
 }
 
 .prose .anchor {
@@ -27,7 +44,7 @@
 }
 
 .prose .anchor:after {
-  @apply text-neutral-300 dark:text-neutral-700;
+  @apply text-label;
   content: '#';
 }
 
@@ -36,7 +53,7 @@
 }
 
 .prose pre {
-  @apply rounded-lg overflow-x-auto p-3 border border-neutral-200 dark:border-neutral-900 text-sm;
+  @apply rounded-lg overflow-x-auto bg-post p-3 border border-border text-sm;
 }
 
 .prose code {
@@ -59,7 +76,7 @@
 }
 
 .prose p {
-  @apply my-4 text-neutral-800 dark:text-neutral-200;
+  @apply my-4 text-text;
 }
 
 .prose h1 {
@@ -88,12 +105,6 @@
 
 .prose ol {
   @apply list-decimal pl-6;
-}
-
-.prose > :first-child {
-  /* Override removing top margin, causing layout shift */
-  margin-top: 1.25em !important;
-  margin-bottom: 1.25em !important;
 }
 
 pre::-webkit-scrollbar {

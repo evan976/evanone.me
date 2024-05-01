@@ -1,0 +1,66 @@
+[
+  {
+    "name": "javascript",
+    "url": "https://developer.mozilla.org/zh-CN/docs/Learn/JavaScript"
+  },
+  {
+    "name": "typescript",
+    "url": "https://www.typescriptlang.org"
+  },
+  {
+    "name": "html5",
+    "url": "https://developer.mozilla.org/zh-CN/docs/Learn/HTML"
+  },
+  {
+    "name": "css3",
+    "url": "https://developer.mozilla.org/zh-CN/docs/Learn/CSS"
+  },
+  {
+    "name": "tailwindcss",
+    "url": "https://tailwindcss.com"
+  },
+  {
+    "name": "vuejs",
+    "url": "https://cn.vuejs.org"
+  },
+  {
+    "name": "react",
+    "url": "https://react.dev"
+  },
+  {
+    "name": "nextjs",
+    "url": "https://nextjs.org"
+  },
+  {
+    "name": "nodejs",
+    "url": "https://nodejs.org"
+  },
+  {
+    "name": "nestjs",
+    "url": "https://nestjs.com"
+  },
+  {
+    "name": "vitejs",
+    "url": "https://cn.vitejs.dev"
+  },
+  {
+    "name": "git",
+    "url": "https://git-scm.com"
+  },
+  {
+    "name": "notion",
+    "url": "https://www.notion.so"
+  },
+  {
+    "name": "figma",
+    "url": "https://www.figma.com"
+  },
+  {
+    "name": "google",
+    "url": "https://www.google.com"
+  },
+  {
+    "name": "vscode",
+    "url": "https://code.visualstudio.com"
+  }
+]
