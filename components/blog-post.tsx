@@ -6,6 +6,7 @@ import { formatDate } from 'lib/utils'
 
 export default function BlogPost() {
   const allPosts = getBlogPosts()
+
   return (
     <div className="grid sm:grid-cols-2 grid-cols-1 gap-8 mt-12">
       {allPosts

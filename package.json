@@ -1,13 +1,13 @@
 {
-  "name": "blog",
-  "version": "0.1.0",
+  "name": "evanone.me",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev --turbo",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "setup": "node ./setup.mjs"
+    "setup": "node ./scripts/setup.mjs"
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.0.2",
