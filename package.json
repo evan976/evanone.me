@@ -7,8 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "setup": "node ./scripts/setup.mjs",
-    "release": "standard-version && git push --follow-tags --set-upstream origin main"
+    "setup": "node ./scripts/setup.mjs"
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.0.2",
