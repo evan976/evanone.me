@@ -32,7 +32,7 @@ export default function Footer() {
             rel="noopener noreferrer"
             target="_blank"
             title="View Source"
-            href="https://github.com/wujihua118/Blog"
+            href="https://github.com/wujihua118/evanone.me"
           >
             <CodeIcon />
           </a>
