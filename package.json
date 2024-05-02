@@ -1,6 +1,6 @@
 {
   "name": "evanone.me",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "private": true,
   "scripts": {
     "dev": "next dev --turbo",
@@ -30,7 +30,6 @@
     "eslint": "^8",
     "eslint-config-next": "14.1.4",
     "postcss": "^8",
-    "standard-version": "^9.5.0",
     "tailwindcss": "^3.3.0",
     "typescript": "^5"
   }
